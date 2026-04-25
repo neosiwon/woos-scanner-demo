@@ -6137,6 +6137,20 @@ var DEMO_COINS = [
 
 // 박제 coin 객체를 v3 스캐너 데이터 구조에 맞게 생성
 function _demoCoin(spec) {
+  // [HOTFIX] 카드 렌더에 필요한 누락 필드 보강
+  var GRADE_LABEL = { 'SPLUS': 'S+', 'S': 'S', 'A': 'A', 'B': 'B', 'C': 'C' };
+  var GRADE_COLOR = {
+    'SPLUS': 'var(--grade-sp)',
+    'S':     'var(--grade-s)',
+    'A':     'var(--grade-a)',
+    'B':     'var(--grade-b)',
+    'C':     'var(--grade-c)'
+  };
+  var SYNC_CLS = {
+    'strong': 'sync-strong',
+    'partial':'sync-partial',
+    'single': 'sync-single'
+  };
   return {
     base: spec.base,
     existsIn: [spec.exchange],
@@ -6148,6 +6162,8 @@ function _demoCoin(spec) {
       changeRate: spec.changeRate,
       total: spec.total,
       gradeCode: spec.gradeCode,
+      gradeLabel: GRADE_LABEL[spec.gradeCode] || spec.gradeCode,
+      gradeColor: GRADE_COLOR[spec.gradeCode] || 'var(--grade-c)',
       scoreSummary: '데모 점수',
       isEntryReady: spec.isEntryReady,
       prePump: spec.prePump,
@@ -6176,6 +6192,7 @@ function _demoCoin(spec) {
     }],
     syncStatus: {
       type: spec.syncStrong ? 'strong' : 'single',
+      cls: spec.syncStrong ? SYNC_CLS.strong : SYNC_CLS.single,
       label: spec.syncStrong ? '동조 강세' : '단일',
       detail: spec.syncRest || ''
     },
